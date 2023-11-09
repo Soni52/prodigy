@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <div id="weather">
+        <h2>Weather Information</h2>
+        <label for="city">Enter City:</label>
+        <input type="text" id="city" placeholder="Enter city name">
+        <button onclick="getWeatherData()">Get Weather</button>
+
+        <div id="weatherData">
+           
+        </div>
+    </div>
+
+    <script>
+        function getWeatherData() {
+            var city = document.getElementById('city').value;
+            var apiKey = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+            var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey;
+
+            $.get(url, function (data) {
+                var weatherData = document.getElementById('weatherData');
+                weatherData.innerHTML = `
+                    <h3>Weather in ${data.name}</h3>
+                    <p>Weather: ${data.weather[0].main}</p>
+                    <p>Description: ${data.weather[0].description}</p>
+                    <p>Temperature: ${convertKelvinToCelsius(data.main.temp)} °C</p>
+                    <p>Feels like: ${convertKelvinToCelsius(data.main.feels_like)} °C</p>
+                `;
+            });
+        }
+
+        function convertKelvinToCelsius(kelvin) {
+            return (kelvin - 273.15).toFixed(2);
+        }
+    </script>
+
+</body>
+</html>
